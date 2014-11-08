@@ -14,5 +14,4 @@
     }
   ],
   "permissions": ["http://*.google.com/", "https://*.google.com/"]
-  }
 }
