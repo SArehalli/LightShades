@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  var completed = { '-1' : true};
   // Run on initial page
   setNames(document.getElementsByClassName("username js-action-profile-name"));
   
@@ -17,7 +18,8 @@ $(document).ready(function() {
   function setNames(names) {
     var memo = {};
     for (var i = 0; i < names.length; i++) { 
-      if (names[i].getElementsByClassName("modified").length == 0) {
+      if (!(i in completed)) {
+        completed[i] = true;
         var callback = function(data, status) {
           console.log(this.i);
           if ( status == "success" ) {
