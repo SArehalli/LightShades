@@ -1,6 +1,7 @@
 {
   "name": "Light Shades",
   "version": "0.1",
+  "manifest_version": "2",
   "description": "Does The Thing",
   "icons": { "128": "icon_128.png" },
   "background": {
