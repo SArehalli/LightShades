@@ -1,11 +1,10 @@
 $(document).ready(function() {
   
-  var love = "</a> <a href='/'><div class='modified' style='display: inline ;color: green;'>Lover </div>";
-  var hate = "</a> <a href='/'><div class='modified' style='display: inline ;color: red;'>Hater </div>";
-  var switzerland = "</a> <a><div class='modified' style='display: inline ;color: grey;'>Neutral </div>";
-  
-  
-  var completed = { '-1' : true};
+  var love = "<a class='modified' style='display: inline ;color: green;'> Lover </a>";
+  var hate = "<a class='modified' style='display: inline ;color: red;'> Hater </a>";
+  var switzerland = "<a class='modified' style='display: inline ;color: grey;'> Neutral </a>";
+ 
+  var completed = {"":""};
   // Run on initial page
   setNames(document.getElementsByClassName("username js-action-profile-name"));
   
@@ -24,8 +23,12 @@ $(document).ready(function() {
   function setNames(names) {
     var memo = {};
     for (var i = 0; i < names.length; i++) { 
-      if (!(i in completed)) {
-        completed[i] = true;
+      var isMatch = false;
+      for (j = 0; j < completed.length; j++ ) {
+        isMatch = isMatch || names[i].isSameNode(completed[j]);
+      }
+      if (!isMatch) {
+        completed[i] = names[i];
         var callback = function(data, status) {
           console.log(this.i);
           if ( status == "success" ) {
@@ -53,9 +56,10 @@ $(document).ready(function() {
           } 
         }
         else { 
-          $.post("//suhasarehalli.me/python/shades", { username: names[i].textContent.slice(1) }, callback.bind({i:i}));
+          $.post("//suhasarehalli.me/python/shades", { username: names[i].textContent.slice(1), isChart: false }, callback.bind({i:i}));
         }
       }
     }
   }
+ 
 });

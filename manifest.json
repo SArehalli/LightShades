@@ -10,8 +10,9 @@
   "content_scripts": [
     {
       "matches": ["https://twitter.com/*"],
-      "js": ["jquery-2.1.1.js","extension.js"]
+      "css": ["box.css"],
+      "js": ["jquery-2.1.1.js","Chart.js/Chart.js","extension.js", "box.js"]
     }
   ],
-  "permissions": ["http://*.google.com/", "https://*.google.com/"]
+  "permissions": ["http://*.google.com/", "https://*.google.com/", "https://suhasarehalli.me/*"]
 }
