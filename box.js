@@ -4,16 +4,14 @@ function bindLink() {
     var moveLeft = 0;
     var moveDown = 0;
     $("a.modified").hover(function(e) {
-        console.log("Got There");
         // it's original
+         console.log(e.target.textContent.slice(1));
         var div = document.createElement('div');
-        div.width = 400;
-        div.height = 200;
         div.id = 'box';
         div.className = 'popbox';
         document.body.appendChild(div);
-        $.post("//suhasarehalli.me/python/shades", { username: this.textContent.slice(1), isChart: true }, function(data, status) {
-         var plot = $.plot(document.getElementById('box'), data);
+        $.post("//suhasarehalli.me/python/shades", { username: e.target.textContent.slice(1), isChart: "True" }, function(Data, status) {
+         var plot = $.plot(document.getElementById('box'), [ {data: $.parseJSON(Data)} ], { xaxis: { mode:"time", timeformat: "%m/%d/%Y" }, series: { lines: {show :true, fill: true, fillColor: "rgba(255,255,2555,0.5)"} } });
          });
         // and old again
         $('#box').show();
@@ -21,6 +19,7 @@ function bindLink() {
         moveDown = ($('#box').outerHeight() / 2);
     }, function() {
         $('#box').hide();
+        $.plot(document.getElementById('box'), []);
     });
  
     $("a.modified").mousemove(function(e) {
