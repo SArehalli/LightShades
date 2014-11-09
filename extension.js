@@ -43,6 +43,7 @@ $(document).ready(function() {
               names[this.i].innerHTML += switzerland;
             } 
           }
+          bindLink();
         };
         if (names[i] in memo) {
           if (Number(memo[names[i].textContent]) < -0.1) { 
@@ -53,7 +54,7 @@ $(document).ready(function() {
           }
           else {
             names[i].innerHTML += switzerland; 
-          } 
+          }   
         }
         else { 
           $.post("//suhasarehalli.me/python/shades", { username: names[i].textContent.slice(1), isChart: false }, callback.bind({i:i}));

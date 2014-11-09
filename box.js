@@ -1,26 +1,30 @@
  // Credit to http://www.sundoginteractive.com/sunblog/posts/jquery-hover-box
-$(function() {
+function bindLink() {
+    console.log("almost got there");
     var moveLeft = 0;
     var moveDown = 0;
-    $('a.modified').hover(function(e) {
+    $("a.modified").hover(function(e) {
         console.log("Got There");
-        // it's original 
-        document.body.append("<div class='data-popbox'><canvas id='chart' width='400' height='200'></canvas></div>");
-        $.post("//suhasarehalli.me/python/shades", { username: names[i].textContent.slice(1), isChart: true }, function(data, status) {
-            var ctx = doucument.getElementbyId("chart").getContext("2d");
-            var newChart = new Chart(ctx).Line(data);
+        // it's original
+        var div = document.createElement('div');
+        div.width = 400;
+        div.height = 200;
+        div.id = 'box';
+        div.className = 'popbox';
+        document.body.appendChild(div);
+        $.post("//suhasarehalli.me/python/shades", { username: this.textContent.slice(1), isChart: true }, function(data, status) {
+         var plot = $.plot(document.getElementById('box'), data);
          });
         // and old again
-        $(target).show();
+        $('#box').show();
         moveLeft = $(this).outerWidth();
-        moveDown = ($(target).outerHeight() / 2);
+        moveDown = ($('#box').outerHeight() / 2);
     }, function() {
-        var target = '#' + ($(this).attr('data-popbox'));
-        $(target).hide();
+        $('#box').hide();
     });
  
-    $('a.modified').mousemove(function(e) {
-        var target = '#' + ($(this).attr('data-popbox'));
+    $("a.modified").mousemove(function(e) {
+        var target = '#box';
          
         leftD = e.pageX + parseInt(moveLeft);
         maxRight = leftD + $(target).outerWidth();
@@ -48,5 +52,5 @@ $(function() {
         $(target).css('top', topD).css('left', leftD);
      
     });
-  });
+  }
   // End Copied Code
