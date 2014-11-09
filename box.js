@@ -11,7 +11,9 @@ function bindLink() {
         div.className = 'popbox';
         document.body.appendChild(div);
         $.post("//suhasarehalli.me/python/shades", { username: e.target.parentNode.textContent.split(" ")[0].slice(1), isChart: "True" }, function(Data, status) {
-         var plot = $.plot(document.getElementById('box'), [ {data: $.parseJSON(Data)} ], { xaxis: { mode:"time", timeformat: "%m/%d" }, series: { lines: {show :true, fill: true} } });
+            if ( $(e.target).is(':hover')) {
+                var plot = $.plot(document.getElementById('box'), [ {label: "Sentiment (bigger is better", data: $.parseJSON(Data)} ], { xaxis: {  mode:"time", timeformat: "%m/%d" }, series: { lines: {show :true, fill: true} } });
+            }
          });
         // and old again
         $('#box').show();
@@ -19,7 +21,7 @@ function bindLink() {
         moveDown = ($('#box').outerHeight() / 2);
     }, function() {
         $('#box').hide();
-        $.plot(document.getElementById('box'), [{ data: []}]);
+        $.plot(document.getElementById('box'), [{ data: [[0,0], [1,0]]}]);
     });
  
     $("a.modified").mousemove(function(e) {
