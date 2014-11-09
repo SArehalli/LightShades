@@ -5,13 +5,13 @@ function bindLink() {
     var moveDown = 0;
     $("a.modified").hover(function(e) {
         // it's original
-         console.log(e.target.textContent.slice(1));
+         console.log(e.target.parentNode.textContent.split(" ")[0].slice(1));
         var div = document.createElement('div');
         div.id = 'box';
         div.className = 'popbox';
         document.body.appendChild(div);
-        $.post("//suhasarehalli.me/python/shades", { username: e.target.textContent.slice(1), isChart: "True" }, function(Data, status) {
-         var plot = $.plot(document.getElementById('box'), [ {data: $.parseJSON(Data)} ], { xaxis: { mode:"time", timeformat: "%m/%d/%Y" }, series: { lines: {show :true, fill: true, fillColor: "rgba(255,255,2555,0.5)"} } });
+        $.post("//suhasarehalli.me/python/shades", { username: e.target.parentNode.textContent.split(" ")[0].slice(1), isChart: "True" }, function(Data, status) {
+         var plot = $.plot(document.getElementById('box'), [ {data: $.parseJSON(Data)} ], { xaxis: { mode:"time", timeformat: "%m/%d" }, series: { lines: {show :true, fill: true} } });
          });
         // and old again
         $('#box').show();
@@ -19,7 +19,7 @@ function bindLink() {
         moveDown = ($('#box').outerHeight() / 2);
     }, function() {
         $('#box').hide();
-        $.plot(document.getElementById('box'), []);
+        $.plot(document.getElementById('box'), [{ data: []}]);
     });
  
     $("a.modified").mousemove(function(e) {
