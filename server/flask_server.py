@@ -3,16 +3,12 @@ from flask import request
 import Haiku
 import Shades
 import decorator
+import MySQLdb
 
 app = Flask(__name__)
+classifier = Shades.getClassifier()
 
-@app.route("/haiku")
-def haiku():
-    try:
-            text_file = request.form['text']
-    except:
-            text_file = "cask.txt"
-    return Haiku.haiku(text_file)
+#...
 
 @app.route("/shades", methods=['GET','POST','OPTIONS'])
 @decorator.crossdomain(origin='*')
@@ -22,7 +18,9 @@ def shades():
         chart = request.form['isChart'] == "True"
     except:
         return "0" 
-    return Shades.shades(username, chart)
+    return Shades.shades(username, classifier, chart)
+
+#...
 
 if __name__ == '__main__':
     app.run(debug=True)
