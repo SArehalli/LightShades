@@ -10,7 +10,7 @@
   "content_scripts": [
     {
       "matches": ["https://twitter.com/*"],
-      "css": ["box.css"],
+      "css": ["js/box.css"],
       "js": ["js/jquery-2.1.1.js","js/jquery.flot.js", "js/jquery.flot.time.js","js/box.js","extension.js"]
     }
   ],
