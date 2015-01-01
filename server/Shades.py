@@ -47,8 +47,8 @@ def shades(usernames, classifier, isChart):
     else:
         result = []
         times = []
-        for tweet in api.user_timeline(screen_name=usernames[0], count=10):
-            result += [int(classifier.classify(feature_select(str(tweet.text).split())))]
+        for tweet in api.user_timeline(screen_name=usernames, count=20):
+            result += [int(classifier.classify(feature_select(str(tweet.text.encode('ascii', 'ignore')).split())))]
             times  += [calendar.timegm(tweet.created_at.timetuple()) * 1000]
         data = zip(times, result) 
         return json.dumps(data)

@@ -1,16 +1,14 @@
  // Credit to http://www.sundoginteractive.com/sunblog/posts/jquery-hover-box
 function bindLink() {
-    console.log("almost got there");
     var moveLeft = 0;
     var moveDown = 0;
     $("a.modified").hover(function(e) {
         // it's original
-         console.log(e.target.parentNode.textContent.split(" ")[0].slice(1));
         var div = document.createElement('div');
         div.id = 'box';
         div.className = 'popbox';
         document.body.appendChild(div);
-        $.post("//suhasarehalli.me/python/shades", { username: e.target.parentNode.textContent.split(" ")[0].slice(1), isChart: "True" }, function(Data, status) {
+        $.post("//suhasarehalli.me/python/shades", JSON.stringify({ usernames: e.target.parentNode.textContent.split(" ")[0].slice(1), isChart: "True" }), function(Data, status) {
             if ( $(e.target).is(':hover')) {
                 var plot = $.plot(document.getElementById('box'), [ {label: "Sentiment (bigger is better", data: $.parseJSON(Data)} ], { xaxis: {  mode:"time", timeformat: "%m/%d" }, series: { lines: {show :true, fill: true} } });
             }

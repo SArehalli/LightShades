@@ -29,7 +29,6 @@ $(document).ready(function() {
       rData = JSON.parse(rData)
       if (stat === "success") {
         for (var i = 0; i < rData.length; i++) {
-          console.log("Loop " + i)
           if (Number(rData[i]) < -0.1) { 
             names[completed + i].innerHTML += hate; 
           }
@@ -38,7 +37,8 @@ $(document).ready(function() {
           }
           else {
             names[completed + i].innerHTML += switzerland;
-          } 
+          }
+          bindLink();
         }
         completed = names.length;
       }
