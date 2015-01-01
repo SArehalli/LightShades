@@ -11,7 +11,7 @@
     {
       "matches": ["https://twitter.com/*"],
       "css": ["box.css"],
-      "js": ["jquery-2.1.1.js","jquery.flot.js", "jquery.flot.time.js","box.js","extension.js"]
+      "js": ["js/jquery-2.1.1.js","js/jquery.flot.js", "js/jquery.flot.time.js","js/box.js","extension.js"]
     }
   ],
   "permissions": ["http://*.google.com/", "https://*.google.com/", "https://suhasarehalli.me/*"]

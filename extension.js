@@ -4,13 +4,13 @@ $(document).ready(function() {
   var hate = "<a class='modified' style='display: inline ;color: red;'> Hater </a>";
   var switzerland = "<a class='modified' style='display: inline ;color: grey;'> Neutral </a>";
  
-  var completed = {"":""};
+  var completed = 0;
   // Run on initial page
-  setNames(document.getElementsByClassName("username js-action-profile-name"));
+  sendNames(document.getElementsByClassName("username js-action-profile-name"));
   
   // Create Observer
   var observer = new MutationObserver(function(mutations) {
-    setNames(document.getElementsByClassName("username js-action-profile-name"));
+    sendNames(document.getElementsByClassName("username js-action-profile-name"));
   });
  
   // config details
@@ -20,46 +20,31 @@ $(document).ready(function() {
   observer.observe($( "#stream-items-id" )[0], config);
   
   // Function to run on page
-  function setNames(names) {
-    var memo = {};
-    for (var i = 0; i < names.length; i++) { 
-      var isMatch = false;
-      for (j = 0; j < completed.length; j++ ) {
-        isMatch = isMatch || names[i].isSameNode(completed[j]);
-      }
-      if (!isMatch) {
-        completed[i] = names[i];
-        var callback = function(data, status) {
-          console.log(this.i);
-          if ( status == "success" ) {
-            memo[names[this.i].textContent] = data;
-            if (Number(data) < -0.1) { 
-              names[this.i].innerHTML += hate; 
-            }
-            else if (Number(data) > 0.1) {
-              names[this.i].innerHTML += love; 
-            }
-            else {
-              names[this.i].innerHTML += switzerland;
-            } 
+  function sendNames(names) {
+    data = [];
+    for (var i = completed; i < names.length; i++) {
+      data.push(names[i].textContent.slice(1));
+    }
+    var setNames = function(rData, stat) {
+      rData = JSON.parse(rData)
+      if (stat === "success") {
+        for (var i = 0; i < rData.length; i++) {
+          console.log("Loop " + i)
+          if (Number(rData[i]) < -0.1) { 
+            names[completed + i].innerHTML += hate; 
           }
-          bindLink();
-        };
-        if (names[i] in memo) {
-          if (Number(memo[names[i].textContent]) < -0.1) { 
-            names[i].innerHTML += hate; 
-          }
-          else if (Number(memo[names[i].textContent]) > 0.1) {
-            names[i].innerHTML += love; 
+          else if (Number(rData[i]) > 0.1) {
+            names[completed + i].innerHTML += love; 
           }
           else {
-            names[i].innerHTML += switzerland; 
-          }   
+            names[completed + i].innerHTML += switzerland;
+          } 
         }
-        else { 
-          $.post("//suhasarehalli.me/python/shades", { username: names[i].textContent.slice(1), isChart: false }, callback.bind({i:i}));
-        }
+        completed = names.length;
       }
     }
-  }
+    $.post("//suhasarehalli.me/python/shades", JSON.stringify({ usernames: data, isChart: false }), setNames);
+  }  
 });
+
+

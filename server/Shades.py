@@ -32,19 +32,22 @@ def getClassifier():
     classifier = NaiveBayesClassifier.train(traindata)
     return classifier
 
-def shades(username, classifier, isChart):
+def shades(usernames, classifier, isChart):
     cred = open("auth.txt").read().split()
     auth = tweepy.OAuthHandler(cred[0], cred[1])
     api = tweepy.API(auth)
     if not isChart:
-        score = 0
-        for tweet in api.user_timeline(screen_name=username, count=5):
-            score += int(classifier.classify(feature_select(str(tweet.text).split())))
-        return str(score)
+        scores = []
+        for username in usernames:
+            score = 0
+            for tweet in api.user_timeline(screen_name=username, count=5):
+                score += int(classifier.classify(feature_select(str(tweet.text.encode('ascii', 'ignore')).split())))
+            scores.append(score)
+        return json.dumps(scores)
     else:
         result = []
         times = []
-        for tweet in api.user_timeline(screen_name=username, count=10):
+        for tweet in api.user_timeline(screen_name=usernames[0], count=10):
             result += [int(classifier.classify(feature_select(str(tweet.text).split())))]
             times  += [calendar.timegm(tweet.created_at.timetuple()) * 1000]
         data = zip(times, result) 
