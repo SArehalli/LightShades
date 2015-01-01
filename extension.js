@@ -5,6 +5,8 @@ $(document).ready(function() {
   var switzerland = "<a class='modified' style='display: inline ;color: grey;'> Neutral </a>";
  
   var completed = 0;
+  var GraphCache = {'___lock___':true};
+
   // Run on initial page
   sendNames(document.getElementsByClassName("username js-action-profile-name"));
   
@@ -38,7 +40,7 @@ $(document).ready(function() {
           else {
             names[completed + i].innerHTML += switzerland;
           }
-          bindLink();
+          bindLink(GraphCache);
         }
         completed = names.length;
       }

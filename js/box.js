@@ -1,5 +1,5 @@
  // Credit to http://www.sundoginteractive.com/sunblog/posts/jquery-hover-box
-function bindLink() {
+function bindLink(cache) {
     var moveLeft = 0;
     var moveDown = 0;
     $("a.modified").hover(function(e) {
@@ -8,11 +8,22 @@ function bindLink() {
         div.id = 'box';
         div.className = 'popbox';
         document.body.appendChild(div);
-        $.post("//suhasarehalli.me/python/shades", JSON.stringify({ usernames: e.target.parentNode.textContent.split(" ")[0].slice(1), isChart: "True" }), function(Data, status) {
-            if ( $(e.target).is(':hover')) {
-                var plot = $.plot(document.getElementById('box'), [ {label: "Sentiment (bigger is better", data: $.parseJSON(Data)} ], { xaxis: {  mode:"time", timeformat: "%m/%d" }, series: { lines: {show :true, fill: true} } });
-            }
-         });
+        name = e.target.parentNode.textContent.split(" ")[0].slice(1)
+        if (name in cache) {
+           console.log("using cache")
+           Data = cache[name]; 
+           var plot = $.plot(document.getElementById('box'), [ {label: "Sentiment (bigger is better", data: $.parseJSON(Data)} ], { xaxis: {  mode:"time", timeformat: "%m/%d" }, series: { lines: {show :true, fill: true} } });
+        }
+        else if (cache['___lock___']) {
+            cache['___lock___'] = false;
+            $.post("//suhasarehalli.me/python/shades", JSON.stringify({ usernames: name, isChart: "True" }), function(Data, status) {
+                if ( $(e.target).is(':hover')) {
+                    var plot = $.plot(document.getElementById('box'), [ {label: "Sentiment (bigger is better", data: $.parseJSON(Data)} ], { xaxis: {  mode:"time", timeformat: "%m/%d" }, series: { lines: {show :true, fill: true} } });
+                }
+                cache[name] = Data;
+                cache['___lock___'] = true;
+             });
+        }
         // and old again
         $('#box').show();
         moveLeft = $(this).outerWidth();
